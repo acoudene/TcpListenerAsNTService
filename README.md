@@ -1,7 +1,5 @@
 # TcpListenerAsNTService
 
-Le détail est ici :
-
 Le code du service NT est dans WindowsService.
 Le nom d’affichage de ce service NT est TcpListenerAsNTService.
 
