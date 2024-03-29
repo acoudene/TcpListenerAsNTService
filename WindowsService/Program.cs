@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Logging.EventLog;
 using WindowsService;
 
-const string ServiceName = "TcpListeneterAsNTService";
+const string ServiceName = "TcpListenerAsNTService";
 
 if (args is { Length: 1 })
 {
@@ -63,7 +63,8 @@ LoggerProviderOptions
   .RegisterProviderOptions<EventLogSettings, EventLogLoggerProvider>(builder.Services);
 
 builder.Services.AddSingleton<TcpListenerProvider>();
-builder.Services.AddHostedService<WindowsBackgroundService>();
+builder.Services.AddSingleton<WindowsBackgroundService>();
+builder.Services.AddHostedService<WindowsBackgroundService>(s => s.GetRequiredService<WindowsBackgroundService>());
 
 // See: https://github.com/dotnet/runtime/issues/47303
 builder.Logging.AddConfiguration(

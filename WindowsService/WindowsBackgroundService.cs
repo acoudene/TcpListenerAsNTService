@@ -32,6 +32,7 @@ public sealed class WindowsBackgroundService : BackgroundService
     {
       // When the stopping token is canceled, for example, a call made from services.msc,
       // we shouldn't exit with a non-zero exit code. In other words, this is expected...
+      _logger.LogInformation("Shutting down in progress...");
     }
     catch (Exception ex)
     {
@@ -46,6 +47,10 @@ public sealed class WindowsBackgroundService : BackgroundService
       // In order for the Windows Service Management system to leverage configured
       // recovery options, we need to terminate the process with a non-zero exit code.
       Environment.Exit(1);
+    }
+    finally
+    {
+      _tcpListenerProvider.Stop();
     }
   }
 }

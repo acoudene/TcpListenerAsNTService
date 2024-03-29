@@ -19,6 +19,11 @@ public class TcpListenerProvider
     _tcpListener.Start();
   }
 
+  public void Stop()
+  {
+    _tcpListener.Stop();
+  }
+
   public async Task HandleConnectionAsync()
   {
     using TcpClient handler = await _tcpListener.AcceptTcpClientAsync();
