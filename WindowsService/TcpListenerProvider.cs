@@ -24,9 +24,9 @@ public class TcpListenerProvider
     _tcpListener.Stop();
   }
 
-  public async Task HandleConnectionAsync()
+  public async Task HandleConnectionAsync(CancellationToken cancellationToken)
   {
-    using TcpClient handler = await _tcpListener.AcceptTcpClientAsync();
+    using TcpClient handler = await _tcpListener.AcceptTcpClientAsync(cancellationToken);
     await using NetworkStream stream = handler.GetStream();
 
     var message = $"📅 {DateTime.Now} 🕛";

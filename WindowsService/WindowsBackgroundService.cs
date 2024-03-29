@@ -1,4 +1,6 @@
-﻿namespace WindowsService;
+﻿using System.Threading;
+
+namespace WindowsService;
 
 public sealed class WindowsBackgroundService : BackgroundService
 {
@@ -24,16 +26,16 @@ public sealed class WindowsBackgroundService : BackgroundService
       while (!stoppingToken.IsCancellationRequested)
       {
         _logger.LogInformation("Tcp listener is handling connection...");
-        await _tcpListenerProvider.HandleConnectionAsync();
+        await _tcpListenerProvider.HandleConnectionAsync(stoppingToken);
         _logger.LogInformation("Tcp listener has received connection.");
-      }
+      }      
     }
-    catch (TaskCanceledException)
+    catch (OperationCanceledException)
     {
       // When the stopping token is canceled, for example, a call made from services.msc,
       // we shouldn't exit with a non-zero exit code. In other words, this is expected...
       _logger.LogInformation("Shutting down in progress...");
-    }
+    }    
     catch (Exception ex)
     {
       _logger.LogError(ex, "{Message}", ex.Message);
